@@ -1,11 +1,12 @@
-#include "lexer.h"
-#include "parse.h"
-#include "runtime.h"
-#include "statement.h"
-#include "test_runner_p.h"
-
+#define NDEBUG
 #include <iostream>
+#include <filesystem>
+#include <fstream>
 
+#include "./include/lexer.h"
+#include "./include/parse.h"
+#include "./include/runtime.h"
+#include "./include/test_runner_p.h"
 using namespace std;
 
 namespace parse {
@@ -47,7 +48,7 @@ print None
         ostringstream output;
         RunMythonProgram(input, output);
 
-        ASSERT_EQUAL(output.str(), "57\n10 24 -8\nhello\nworld\nTrue False\n\nNone\n");
+        ASSERT_EQUAL(output.str(), "57\n10 24 -8\nhello\nworld\nTrue False\n\nNone\n")
     }
 
     void TestAssignments() {
@@ -66,7 +67,7 @@ print x, y
         ostringstream output;
         RunMythonProgram(input, output);
 
-        ASSERT_EQUAL(output.str(), "57\nC++ black belt\nFalse\nNone False\n");
+        ASSERT_EQUAL(output.str(), "57\nC++ black belt\nFalse\nNone False\n")
     }
 
     void TestArithmetics() {
@@ -75,7 +76,7 @@ print x, y
         ostringstream output;
         RunMythonProgram(input, output);
 
-        ASSERT_EQUAL(output.str(), "15 120 -13 3 15\n");
+        ASSERT_EQUAL(output.str(), "15 120 -13 3 15\n")
     }
 
     void TestVariablesArePointers() {
@@ -108,7 +109,7 @@ print y.value
         ostringstream output;
         RunMythonProgram(input, output);
 
-        ASSERT_EQUAL(output.str(), "2\n3\n");
+        ASSERT_EQUAL(output.str(), "2\n3\n")
     }
 
     void TestAll() {
@@ -127,28 +128,31 @@ print y.value
 
 }  // namespace
 
-int LexerExample(){
-    try {
-        TestRunner tr;
-        parse::RunOpenLexerTests(tr);
-        parse::Lexer lexer(std::cin);
-        parse::Token t;
-        while ((t = lexer.CurrentToken()) != parse::token_type::Eof{}) {
-            std::cout << t << std::endl;
-            lexer.NextToken();
-        }
-    } catch (const std::exception& e) {
-        std::cerr << e.what();
+int main(int argc, const char** argv) {
+    #ifndef NDEBUG
+        TestAll();
+    #endif
+    if (argc != 3) {
+        cerr << "Mython interpreter!"sv << endl;
+        std::filesystem::path interpreter = argv[0];
+        cerr << "Usage: "sv << interpreter.filename() << " <in_file> <out_file>"sv << endl;
         return 1;
     }
-    return 0;
-}
 
-int main() {
+    std::filesystem::path in_path = argv[1];
+    std::filesystem::path out_path = argv[2];
+
+    ifstream ifile(in_path);
+    if (!ifile.is_open()) {
+        std::cerr << "Can't open file "s << in_path << endl;
+    }
+    ofstream ofile(out_path);
+    if (!ofile.is_open()) {
+        std::cerr << "Can't open file "s << out_path << endl;
+    }
+
     try {
-        TestAll();
-
-        RunMythonProgram(cin, cout);
+        RunMythonProgram(ifile, ofile);
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
         return 1;

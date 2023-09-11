@@ -1,7 +1,7 @@
-#include "lexer.h"
-#include "parse.h"
-#include "statement.h"
-#include "test_runner_p.h"
+#include "../include/lexer.h"
+#include "../include/parse.h"
+#include "../include/statement.h"
+#include "../include/test_runner_p.h"
 
 using namespace std;
 

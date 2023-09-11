@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.24)
 project(Mython)
 
-file(GLOB source *.cpp *.h)
+file(GLOB source ./src/*.cpp)
+file(GLOB includes ./include/*.h)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Mython ${source})
+add_executable(Mython main.cpp ${source} ${includes})

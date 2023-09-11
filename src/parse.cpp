@@ -1,7 +1,7 @@
-#include "parse.h"
+#include "../include/parse.h"
 
-#include "lexer.h"
-#include "statement.h"
+#include "../include/lexer.h"
+#include "../include/statement.h"
 
 using namespace std;
 

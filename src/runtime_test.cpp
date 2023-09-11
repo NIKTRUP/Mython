@@ -1,5 +1,5 @@
-#include "runtime.h"
-#include "test_runner_p.h"
+#include "../include/runtime.h"
+#include "../include/test_runner_p.h"
 
 #include <functional>
 

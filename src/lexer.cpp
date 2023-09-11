@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "../include/lexer.h"
 #include <algorithm>
 
 using namespace std;
